@@ -1,0 +1,19 @@
+# create a playbook to install nodejs inside web
+
+---
+
+# add name of host server/agent node
+- hosts: web
+
+# gather live information
+  gather_facts: yes
+
+# need admin access
+  become: true
+
+# add the instructions
+  tasks:
+  - name: Install NodeJS
+    apt: pkg=nodejs state=present
+
+# nodejs is running

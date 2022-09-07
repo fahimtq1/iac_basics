@@ -1,0 +1,21 @@
+# create a playbook to configure the reverse proxy inside web
+
+---
+
+# add host name
+- hosts: web
+
+# gather live information
+  gather_facts: yes
+
+# need admin access
+  become: yes
+
+# add the instructions
+  tasks:
+  - name: Configure reverse proxy
+    copy:
+        src: /etc/ansible/default
+        dest: /etc/nginx/sites-available/default
+
+# reverse proxy should be set up

@@ -1,0 +1,20 @@
+# create a playbook to install nginx web server inside web       
+# --- three dashes at the start of a YAML file
+
+---
+
+# add hosts or name of the host server
+- hosts: web 
+
+# gather live information 
+  gather_facts: yes 
+
+# we need admin access 
+  become: true 
+
+# add the instructions  
+  tasks: 
+  - name: Install Nginx
+    apt: pkg=nginx state=present
+
+# the nginx server status is running 
