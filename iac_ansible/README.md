@@ -16,7 +16,7 @@ Ansible is a software tool used for the automation of IaC configurations. It is 
 
 ### In the controller VM
 
-Run these commands to configure the VM:
+#### Run these commands to configure the VM:
 
 - `sudo apt-get install software-properties-common`- installs the remaining software dependencies
 - `sudo apt-add-repository ppa:ansible/ansible`- adds the Ansible repository to the VM
@@ -25,7 +25,7 @@ Run these commands to configure the VM:
 
 NOTE- Any command that utilises the Ansible software to configure the target node from the Ansible controller, is known as an Ansible ad-hoc command.
 
-Run these commands to check the connection with the agent nodes:
+#### Run these commands to check the connection with the agent nodes:
 
 - `ping 192.168.33.10/11`- receives a response from the web VM and db VM respectively
 - `ssh vagrant@192.168.33.10/11`- SSH from the controller to either agent node with `vagrant` being the default password that needs to be inputted when prompted
@@ -34,19 +34,21 @@ Run these commands to check the connection with the agent nodes:
 192.168.33.11 ansible_connection=ssh ansible_ssh_user=vagrant ansible_ssh_pass=vagrant`
 - `sudo ansible all -m ping`- checks the connection to the node by outputting `pong`
 
-Run these commands to configure the web VM:
+#### Run these commands to configure the web VM:
 
 - To configure the web VM the following dependencies are required: npm, NodeJS and Nginx
 - These configurations are made with YAML files known as Ansible playbooks
 - Please see `playbooks` in this directory to see the YAML files
 - `ansible-playbook name.yml`- runs the playbook
 
-Breakdown of an example playbook:
+NOTE- Due to multiple issues with Vagrant, certain steps (`DB_HOST environment variable` and `npm start`) were conducted manually
+
+Breakdown of a simple example playbook:
 
 ```
 # create a playbook to install nodejs inside web
-
----
+# initialise YAML file with ---
+--- 
 
 # add name of host server/agent node
 - hosts: web
@@ -64,3 +66,13 @@ Breakdown of an example playbook:
 
 # nodejs is running
 ```
+
+#### Vagrant, Ansible and AWS to make a Hybrid Cloud Environment
+
+[Follow these steps](https://medium.datadriveninvestor.com/devops-using-ansible-to-provision-aws-ec2-instances-3d70a1cb155f) to use Ansible to spin up an EC2 instance on AWS
+
+An Ansible Vault needs to be set up in order to create a secure communication channel between the controller VM and AWS. This has the latest versions of the following dependencies: python3, pip3 and awscli. Moreover, the following file path/folder structure has to be created: `/etc/ansible/group_vars/all/pass.yml`.
+
+- To create the file path use `mkdir`
+- 
+
