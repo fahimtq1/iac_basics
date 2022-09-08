@@ -6,8 +6,7 @@ Ansible is a software tool used for the automation of IaC configurations. It is 
 
 ## Using Ansible
 
-![iac](https://user-images.githubusercontent.com/99980305/188607910-a4d5866d-8856-4e84-b146-a5859a12b960.png)
-
+![iac](https://user-images.githubusercontent.com/99980305/189075626-5404344d-844d-433a-980e-515036be4d77.png)
 
 - Vagrant should be installed on the localhost
 - A multi-machine environment will be created with three virtual machines (VM) configured in the `Vagrantfile`: controller, web and db
