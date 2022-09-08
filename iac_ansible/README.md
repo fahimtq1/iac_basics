@@ -73,6 +73,139 @@ Breakdown of a simple example playbook:
 
 An Ansible Vault needs to be set up in order to create a secure communication channel between the controller VM and AWS. This has the latest versions of the following dependencies: python3, pip3 and awscli. Moreover, the following file path/folder structure has to be created: `/etc/ansible/group_vars/all/pass.yml`.
 
-- To create the file path use `mkdir`
-- 
+- Install the Ansible Vault dependencies with the following commands:
 
+1. sudo apt install python3-pip
+2. pip3 install awscli
+3. pip3 install boto boto3
+
+- To create the file path use `mkdir` command
+- Navigate to `/etc/ansible/group_vars/all` 
+- `sudo ansible-vault create pass.yml`- creates the Ansible Vault
+- Create a password for the Vault and then within the fault paste the following lines of information:
+
+1. aws_access_key: xxxx
+2. aws_secret_key: xxxx
+
+- In the `.ssh` folder, ensure that there is a private key and public key generated using `ssh-keygen -t rsa -b 4096` as well as the `.pem` file needed to securely communicate with AWS:
+
+1. All these keys should have the same name to avoid confusion
+2. The .pem file key-pair can be created in AWS following [these steps](https://docs.aws.amazon.com/servicecatalog/latest/adminguide/getstarted-keypair.html)
+
+- Use the following playbook to create the EC2 instances
+
+```
+---
+
+- hosts: localhost
+  connection: local
+  gather_facts: False
+
+
+
+ vars:
+    ansible_python_interpreter: /usr/bin/python3
+    key_name: eng122
+    region: eu-west-1
+    image: ami-0d28346e264907026
+    id: "web-app"
+    sec_group: "{{ id }}-sec"
+
+
+
+ tasks:
+
+
+
+   - name: Facts
+      block:
+
+
+
+     - name: Get instances facts
+        ec2_instance_facts:
+          aws_access_key: "{{aws_access_key}}"
+          aws_secret_key: "{{aws_secret_key}}"
+          region: "{{ region }}"
+        register: result
+
+
+
+     - name: Instances ID
+        debug:
+          msg: "ID: {{ item.instance_id }} - State: {{ item.state.name }} - Public DNS: {{ item.public_dns_name }}"
+        loop: "{{ result.instances }}"
+
+
+
+     tags: always
+
+
+
+
+    - name: Provisioning EC2 instances
+      block:
+
+
+
+     - name: Upload public key to AWS
+        ec2_key:
+          name: "{{ key_name }}"
+          key_material: "{{ lookup('file', '/home/vagrant/.ssh/{{ key_name }}.pub') }}"
+          region: "{{ region }}"
+          aws_access_key: "{{aws_access_key}}"
+          aws_secret_key: "{{aws_secret_key}}"
+
+
+
+     - name: Create security group
+        ec2_group:
+          name: "{{ sec_group }}"
+          description: "Sec group for app {{ id }}"
+          region: "{{ region }}"
+          aws_access_key: "{{aws_access_key}}"
+          aws_secret_key: "{{aws_secret_key}}"
+          rules:
+            - proto: tcp
+              ports:
+                - 22
+              cidr_ip: 0.0.0.0/0
+              rule_desc: allow all on ssh port
+        register: result_sec_group
+
+
+
+     - name: Provision instance(s)
+        ec2:
+          aws_access_key: "{{aws_access_key}}"
+          aws_secret_key: "{{aws_secret_key}}"
+          key_name: "{{ key_name }}"
+          id: "{{ id }}"
+          group_id: "{{ result_sec_group.group_id }}"
+          image: "{{ image }}"
+          instance_type: t2.micro
+          region: "{{ region }}"
+          wait: true
+          count: 1
+         # exact_count: 2
+          count_tag:
+            Name: eng122-fahim-ansible-app
+          instance_tags:
+            Name: eng122-fahim-ansible-app
+
+
+
+     tags: ['never', 'create_ec2']
+```
+
+- `sudo ansible-playbook create-ec2-playbook.yml --ask-vault-pass --tags ec2_create`- specific ansible command to run a playbook that creates an EC2 instance 
+
+#### In EC2 instance
+
+The steps detailed earlier in this documentation can be followed to use the controller EC2 instance to make the web and db EC2 instances. 
+
+Key points:
+
+- Ensure the correct keys (private, public and pem) are in the `.ssh` folder 
+- Ensure the pem key has the correct permissions with `sudo chmod 400 file.pem`
+- Ensure you can ping the web and db instances with `sudo ansible all -m ping --ask-vault-pass`- it now has to seek authentication with Ansible Vault in order to run commands and communicate with the other instances
