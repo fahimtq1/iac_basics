@@ -16,6 +16,8 @@ Orchestration refers to the process of automating an entire workflow that involv
 
 ## Using Terraform
 
+![terraform](https://user-images.githubusercontent.com/99980305/189128354-1a922e93-c1a6-4c50-bfed-6b154eb6fabe.png)
+
 ### Setting up Terraform on Windows machine
 
 - Run Windows Powershell as Administrator and run this command- `Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))`
