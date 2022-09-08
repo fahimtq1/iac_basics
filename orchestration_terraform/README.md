@@ -23,6 +23,7 @@ Orchestration refers to the process of automating an entire workflow that involv
 - Run Windows Powershell as Administrator and run this command- `Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))`
 - The command can be found on [this link](https://chocolatey.org/install) and Chocolatey is installed
 - `choco install terraform`- downloads and installs the latest version of Terraform
+- `terraform`- shows all terraform commands
 
 ### Orchestration with Terraform
 
