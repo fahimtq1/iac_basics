@@ -27,3 +27,13 @@ See [this link](https://bluelight.co/blog/best-infrastructure-as-code-tools) for
 The two IaC tools used in this project are Ansible and Terraform. Ansible will be used to configure the Vagrant virtual machines ([found in this project](https://github.com/fahimtq1/virtualisation_basics/blob/main/PROJECT.md)) and then used to configure EC2 instances on AWS. Please see the `iac_ansible` directory for more details on how Ansible was used in this project.
 
 ## Comparing Ansible and Terraform
+
+### Similarities
+
+- Agentless
+- Uses SSH keys to perform tasks
+
+### Differences
+
+- Terraform is more comprehensive in its orchestration process
+- Ansible is better at handling and configuring a large number of machines

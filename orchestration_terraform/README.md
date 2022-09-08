@@ -27,6 +27,8 @@ Orchestration refers to the process of automating an entire workflow that involv
 
 ### Orchestration with Terraform
 
+#### EC2 instance
+
 - Create a file `main.tf`- the .tf extension symbolises a Terraform configuration file
 - Paste the following contents into the file
 
@@ -75,3 +77,14 @@ resource "aws_instance" "app_instance" {
 2. `terraform plan`- checks the syntax of the files in log outputs
 3. `terraform apply`- runs the file and spins up on instance on AWS
 4. `terraform destroy`- destroys the instance that has been created with the file
+
+#### EC2 instance in VPC
+
+The file `main.tf` will be edited to perform orchestration of an entire worklow: VPC, Gateway, Route Table, Subnets and EC2 instance. It is important to be careful of the order of the resource blocks:
+
+1. Create the VPC
+2. Create the subnets within the VPC
+3. Create an internet gateway within the VPC
+4. Create a route table, that is connected to the internet gateway, within the VPC
+5. Attach the public subnet to the route table
+6. Create the instance
