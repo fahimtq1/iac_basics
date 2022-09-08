@@ -2,7 +2,7 @@
 
 ## What is Terraform?
 
-Terraform is another IaC tool that allows a user to define infrastructure on both the cloud and localhost with configuration files. It is a lightweight application used to manage low-level infrastructure components.
+Terraform is an IaC tool that allows a user to define infrastructure on both the cloud and localhost with configuration files. It is a lightweight application used to manage low-level infrastructure components.
 
 ## Benefits of Terraform 
 
