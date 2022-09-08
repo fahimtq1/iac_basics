@@ -25,4 +25,7 @@ resource "aws_instance" "app_instance" {
       "Name" = "eng122-fahim-tf-app"
     }
 
+# how to add ssh connection to instance
+    key_name = "eng122-fahim-tf-key"
+
 }
