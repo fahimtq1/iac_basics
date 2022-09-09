@@ -208,3 +208,12 @@ Key points:
 - Ensure the correct keys (private, public and pem) are in the `.ssh` folder 
 - Ensure the pem key has the correct permissions with `sudo chmod 400 file.pem`
 - Ensure you can ping the web and db instances with `sudo ansible all -m ping --ask-vault-pass`- it now has to seek authentication with Ansible Vault in order to run commands and communicate with the other instances
+- Ensure in `\etc\ansible\hosts` paste the following lines to establish a connection between the controller and the agent nodes:
+
+```
+[app]
+ec2-instance ansible_host=private-ip ansible_user=ubuntu ansible_ssh_private_key_file=/home/ubuntu/.ssh/file.pem
+
+[db]
+ec2-instance ansible_host=private-ip ansible_user=ubuntu ansible_ssh_private_key_file=/home/ubuntu/.ssh/file.pem
+```
