@@ -21,7 +21,7 @@ Orchestration refers to the process of automating an entire workflow that involv
 ### Saving AWS Access and Secret Keys
 
 - Edit the system environment variables -> Environment variables - User variables 
-- Add aws_access_key_id and aws_secret_access_key (specific syntax) as two new variables
+- Add AWS_ACCESS_KEY_ID and AWS_SECRET_ACCESS_KEY (specific syntax) as two new environment variables
 
 ### Setting up Terraform on Windows machine
 
