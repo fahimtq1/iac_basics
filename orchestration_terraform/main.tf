@@ -1,34 +1,34 @@
 # specify cloud service provider and region
 provider "aws" {
-    region = "eu-west-1"
+    region = var.region_name
 }
 
 # resource to make the vpc
 resource "aws_vpc" "main" {
-    cidr_block = "10.0.0.0/16"
+    cidr_block = var.vpc_cidr_block
 
     tags = {
-      "Name" = "eng122-fahim-tf-vpc"
+      "Name" = var.vpc_name
     }
 }
 
 # resource to make the public subnet
 resource "aws_subnet" "public" {
     vpc_id = aws_vpc.main.id   # connecting the to the vpc made in "main" resource
-    cidr_block = "10.0.4.0/24"
+    cidr_block = var.public_cidr_block
 
     tags = {
-      "Name" = "eng122-fahim-tf-public"
+      "Name" = var.public_name
     }
 }
 
 # resource to make the the private subnet
 resource "aws_subnet" "private" {
     vpc_id = aws_vpc.main.id   # can also just assign the id of the chosen vpc
-    cidr_block = "10.0.17.0/24"
+    cidr_block = var.private_cidr_block
 
     tags = {
-      "Name" = "eng122-fahim-tf-private"
+      "Name" = var.private_name
     }  
 }
 
@@ -37,7 +37,7 @@ resource "aws_internet_gateway" "igw" {
     vpc_id = aws_vpc.main.id
 
     tags = {
-        "Name" = "eng122-fahim-tf-igw"
+        "Name" = var.igw_name
     }  
 }
 
@@ -46,12 +46,12 @@ resource "aws_route_table" "public-rt" {
     vpc_id = aws_vpc.main.id
 
     route {
-        cidr_block = "0.0.0.0/0"
+        cidr_block = var.rt_cidr_block
         gateway_id = aws_internet_gateway.igw.id
     }  
 
     tags = {
-      "Name" = "eng122-fahim-tf-public-rt"
+      "Name" = var.rt_name
     }
 }
 
@@ -61,20 +61,54 @@ resource "aws_route_table_association" "public-rt-public" {
     route_table_id = aws_route_table.public-rt.id  
 }
 
-# resource to create an ec2 instance
+# resources to create an ec2 instances
 resource "aws_instance" "app_instance" {
-    ami = "ami-0d28346e264907026"
+    ami = var.ami_id
 
-    instance_type = "t2.micro"
+    instance_type = var.ec2_instance_type
 
-    associate_public_ip_address = true
+    associate_public_ip_address = var.associate_ip_boolean
 
     subnet_id = aws_subnet.public.id
 
     tags = {
-      "Name" = "eng122-fahim-tf-app"
+      "Name" = var.app_name
     }
 
-    key_name = "eng122-fahim-tf-key"
+    key_name = var.key
+
+}
+
+resource "aws_instance" "db_instance" {
+    ami = var.ami_id
+
+    instance_type = var.ec2_instance_type
+
+    associate_public_ip_address = var.associate_ip_boolean
+
+    subnet_id = aws_subnet.private.id
+
+    tags = {
+      "Name" = var.db_name
+    }
+
+    key_name = var.key
+
+}
+
+resource "aws_instance" "controller_instance" {
+    ami = var.ami_id
+
+    instance_type = var.ec2_instance_type
+
+    associate_public_ip_address = var.associate_ip_boolean
+
+    subnet_id = aws_subnet.public.id
+
+    tags = {
+      "Name" = var.controller_name
+    }
+
+    key_name = var.key
 
 }
