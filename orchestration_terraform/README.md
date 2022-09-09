@@ -97,5 +97,3 @@ The file `main.tf` will be edited to perform orchestration of an entire worklow:
 #### Abstraction with Terraform
 
 Sensitive information can be stored and hidden (abstracted) in a `variables.tf` file. This file contains all the required variables and is to be kept in the same file location as the `main.tf` file. Within the `main.tf` file, the variables can be called upon and Terraform's software will recognise it. Details can be viewed in `main.tf` file. 
-
-
