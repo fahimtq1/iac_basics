@@ -93,3 +93,7 @@ The file `main.tf` will be edited to perform orchestration of an entire worklow:
 4. Create a route table, that is connected to the internet gateway, within the VPC
 5. Attach the public subnet to the route table
 6. Create the instance
+
+#### Using variables.tf file
+
+
