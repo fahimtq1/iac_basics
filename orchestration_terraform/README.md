@@ -18,6 +18,11 @@ Orchestration refers to the process of automating an entire workflow that involv
 
 ![terraform](https://user-images.githubusercontent.com/99980305/189128354-1a922e93-c1a6-4c50-bfed-6b154eb6fabe.png)
 
+### Saving AWS Access and Secret Keys
+
+- Edit the system environment variables -> Environment variables - User variables 
+- Add aws_access_key_id and aws_secret_access_key (specific syntax) as two new variables
+
 ### Setting up Terraform on Windows machine
 
 - Run Windows Powershell as Administrator and run this command- `Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))`
